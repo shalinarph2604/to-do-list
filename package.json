@@ -15,12 +15,18 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
-    "express": "^5.0.1"
+    "cors": "^2.8.5",
+    "express": "^5.0.1",
+    "formidable": "^3.5.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@stylistic/eslint-plugin": "^4.1.0",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/formidable": "^3.4.5",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.5",
     "eslint": "^9.21.0",
     "globals": "^16.0.0",
