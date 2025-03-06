@@ -7,8 +7,7 @@ routerQueries.get('/', (req, res) => {
   // coba dapetin query `search`
   if (req.query.search) {
     console.log('search', req.query.search)
-  }
-  else {
+  } else {
     throw new NotFoundError('Tidak ada query search')
   }
 

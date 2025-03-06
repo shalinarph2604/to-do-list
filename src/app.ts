@@ -3,12 +3,14 @@ import express from 'express'
 import morgan from 'morgan'
 import CustomError from './helpers/custom-errors/custom-error'
 import routerBooks from './routes/books'
+import jwtRoutes from './routes/jwt'
 import jsonRoute from './routes/middleware-json'
 import txtRoute from './routes/middleware-text'
 import urlencodedRoute from './routes/middleware-urlencode'
 import routerParams from './routes/params'
 import routerQueries from './routes/queries'
 import uploadRoutes from './routes/upload-files'
+import sessionRoutes from './routes/session'
 
 const app = express()
 const port = 3000
@@ -24,6 +26,8 @@ app.use('/urlencoded', urlencodedRoute)
 app.use('/text', txtRoute)
 app.use('/public', express.static('public'))
 app.use('/upload', uploadRoutes)
+app.use('/jwt', jwtRoutes)
+app.use('/session', sessionRoutes)
 
 const homePageHandler = (_req, res) => {
   res.json({
@@ -41,14 +45,6 @@ app.get('/query', (req, res) => {
     query,
   })
 })
-
-// mengambil params dari url
-// app.get('/:username', (req, res) => {
-//   const params = req.params
-//   res.json({
-//     params,
-//   })
-// })
 
 // mengambil params dari url
 app.post('/', (req, res) => {

@@ -11,5 +11,7 @@ export default [
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  stylistic.configs.recommended,
+  stylistic.configs.customize({
+    braceStyle: '1tbs',
+  }),
 ]
