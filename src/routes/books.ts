@@ -1,16 +1,11 @@
 import express from 'express'
-import bookController from '../controllers/book'
+import bookController from '../controllers/book-controller'
 
 // contoh mau bikin crud untuk endpoint /books
 
 const routerBooks = express.Router()
 
-// routerBooks.get('/', (req, res) => {
-//   res.json({
-//     message: 'success',
-//     data: books,
-//   })
-// })
+routerBooks.get('/', bookController.getBook)
 
 routerBooks.post('/', express.json(), bookController.addBook)
 

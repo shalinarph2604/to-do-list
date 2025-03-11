@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
+    "dev": "tsx watch --env-file=.env src/app.ts",
     "build": "tsc",
-    "start": "node out/app.js",
+    "start": "node --env-file=.env out/app.js",
     "lint": "eslint .",
     "format": "eslint . --fix"
   },
@@ -20,7 +20,8 @@
     "express-session": "^1.18.1",
     "formidable": "^3.5.2",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

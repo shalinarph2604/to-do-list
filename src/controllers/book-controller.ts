@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import bookService from '../services/book-service'
+import bookQuerySchema from './book-validator'
 
 const addBook = (req: Request, res: Response) => {
   const payload = req.body
@@ -22,6 +23,13 @@ const addBook = (req: Request, res: Response) => {
   })
 }
 
+const getBook = (req: Request, res: Response) => {
+  const queryString = bookQuerySchema.parse(req.query)
+  console.log(queryString)
+  res.status(200).json(queryString)
+}
+
 export default {
   addBook,
+  getBook,
 }
