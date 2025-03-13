@@ -1,13 +1,13 @@
 import CustomError from './custom-error'
 
-class NotFoundError extends CustomError {
+class Unauthorized extends CustomError {
   statusCode: number
 
-  constructor(message: string, statusCode = 404) {
+  constructor(message: string, statusCode = 401) {
     super(message, statusCode)
     this.message = message
     this.statusCode = statusCode
   }
 }
 
-export default NotFoundError
+export default Unauthorized

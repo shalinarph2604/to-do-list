@@ -1,13 +1,13 @@
 import CustomError from './custom-error'
 
-class NotFoundError extends CustomError {
+class ForbiddenError extends CustomError {
   statusCode: number
 
-  constructor(message: string, statusCode = 404) {
+  constructor(message: string, statusCode = 403) {
     super(message, statusCode)
     this.message = message
     this.statusCode = statusCode
   }
 }
 
-export default NotFoundError
+export default ForbiddenError
