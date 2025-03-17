@@ -1,14 +1,33 @@
 import userRepository from '../repositories/user-repository'
 import passwordHelper from '../helpers/password'
 import { UserSchema, UserSchemaPartial } from '../schemas/user-schema'
+import NotFoundError from '../helpers/custom-errors/not-found'
+import BadRequestError from '../helpers/custom-errors/bad-request'
 
 const createUser = async (user: UserSchema) => {
+  const isEmailExist = await findUserByEmail(user.email)
+
+  if (isEmailExist) {
+    throw new BadRequestError('Email is already used!')
+  }
+
+  // ubah plain text password menjadi hashed password
   user.password = await passwordHelper.hashPassword(user.password)
-  return userRepository.createUser(user)
+
+  const createdUser = await userRepository.createUser(user)
+
+  // jadikan password undefined agar user tidak bisa melihat password
+  return Object.assign(createdUser, { password: undefined })
 }
 
 const findUserById = async (id: number) => {
-  return userRepository.findUserById(id)
+  const user = await userRepository.findUserById(id)
+
+  if (!user) {
+    throw new NotFoundError('User not found!')
+  }
+
+  return user
 }
 
 const findUserByEmail = async (email: string) => {
@@ -20,11 +39,18 @@ const findUserPasswordByEmail = async (email: string) => {
 }
 
 const updateUserById = async (id: number, data: UserSchemaPartial) => {
+  // cek dan validasi user
+  await findUserById(id)
+
+  // ubah plain text password menjadi hashed password
   if (data.password) data.password = await passwordHelper.hashPassword(data.password)
+
   return userRepository.updateUserById(id, data)
 }
 
 const deleteUserById = async (id: number) => {
+  // cek dan validasi user
+  await findUserById(id)
   return userRepository.deleteUserById(id)
 }
 

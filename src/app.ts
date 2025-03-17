@@ -10,7 +10,11 @@ import urlencodedRoute from './routes/middleware-urlencode'
 import routerParams from './routes/params'
 import routerQueries from './routes/queries'
 import uploadRoutes from './routes/upload-files'
+import userRoutes from './routes/user-route'
+
 import sessionRoutes from './routes/session'
+// init database
+import { syncDatabase } from './models'
 
 const app = express()
 const port = 3000
@@ -28,6 +32,7 @@ app.use('/public', express.static('public'))
 app.use('/upload', uploadRoutes)
 app.use('/jwt', jwtRoutes)
 app.use('/session', sessionRoutes)
+app.use('/', userRoutes)
 
 const homePageHandler = (_req, res) => {
   res.json({
@@ -81,6 +86,9 @@ const errorLogger = (err, _req, res, next) => {
 
 app.use(errorLogger)
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await syncDatabase().then(async () => {
+    console.log('Database synchronized')
+  })
   console.info('Server running at port ', port)
 })
