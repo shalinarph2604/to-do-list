@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import bookService from '../services/book-service'
-import bookQuerySchema from './book-validator'
+import bookQuerySchema from '../schemas/book-schema'
 
 const addBook = (req: Request, res: Response) => {
   const payload = req.body
