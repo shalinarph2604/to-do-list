@@ -2,17 +2,9 @@ import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
 import CustomError from './helpers/custom-errors/custom-error'
-import routerBooks from './routes/books'
-import jwtRoutes from './routes/jwt'
-import jsonRoute from './routes/middleware-json'
-import txtRoute from './routes/middleware-text'
-import urlencodedRoute from './routes/middleware-urlencode'
-import routerParams from './routes/params'
-import routerQueries from './routes/queries'
 import uploadRoutes from './routes/upload-files'
 import userRoutes from './routes/user-route'
 
-import sessionRoutes from './routes/session'
 // init database
 import { syncDatabase } from './models'
 
@@ -22,18 +14,6 @@ const port = 3000
 app.use(cors())
 app.use(morgan('dev'))
 
-app.use('/books', routerBooks)
-app.use('/query', routerQueries)
-app.use('/params', routerParams)
-app.use('/json', jsonRoute)
-app.use('/urlencoded', urlencodedRoute)
-app.use('/text', txtRoute)
-app.use('/public', express.static('public'))
-app.use('/upload', uploadRoutes)
-app.use('/jwt', jwtRoutes)
-app.use('/session', sessionRoutes)
-app.use('/', userRoutes)
-
 const homePageHandler = (_req, res) => {
   res.json({
     message: 'hello from Express',
@@ -41,24 +21,10 @@ const homePageHandler = (_req, res) => {
 }
 
 app.get('/', homePageHandler)
-app.get('/hello', homePageHandler)
 
-// mengambil query dari url
-app.get('/query', (req, res) => {
-  const query = req.query
-  res.json({
-    query,
-  })
-})
-
-// mengambil params dari url
-app.post('/', (req, res) => {
-  const body = req.body
-  console.info(body.name)
-  res.json({
-    body,
-  })
-})
+app.use('/public', express.static('public'))
+app.use('/upload', uploadRoutes)
+app.use('/', userRoutes)
 
 // middleware error
 const errorLogger = (err, _req, res, next) => {

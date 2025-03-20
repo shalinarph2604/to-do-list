@@ -1,8 +1,11 @@
 import userRepository from '../repositories/user-repository'
 import passwordHelper from '../helpers/password'
-import { UserSchema, UserSchemaPartial } from '../schemas/user-schema'
+import { UserSchema, UserSchemaPartial, QueryUserSchema } from '../schemas/user-schema'
 import NotFoundError from '../helpers/custom-errors/not-found'
 import BadRequestError from '../helpers/custom-errors/bad-request'
+import { FindAndCountOptions } from 'sequelize/types/model'
+import { User } from '../models/User'
+import { Op } from 'sequelize'
 
 const createUser = async (user: UserSchema) => {
   const isEmailExist = await findUserByEmail(user.email)
@@ -54,6 +57,26 @@ const deleteUserById = async (id: number) => {
   return userRepository.deleteUserById(id)
 }
 
+const findAndCountAllUser = async (query: QueryUserSchema) => {
+  const payload: Omit<FindAndCountOptions<User>, 'group'> = {}
+
+  if (query.name) {
+    payload.where = {
+      name: {
+        [Op.iLike]: `%${query.name}%`,
+      },
+    }
+  }
+
+  payload.order = [[query.order_by, query.order_direction]]
+
+  payload.limit = query.limit
+
+  payload.offset = (query.page - 1) * query.limit + 1
+
+  return userRepository.findAndCountAllUser(payload)
+}
+
 export default {
   createUser,
   findUserById,
@@ -61,4 +84,5 @@ export default {
   findUserPasswordByEmail,
   updateUserById,
   deleteUserById,
+  findAndCountAllUser,
 }

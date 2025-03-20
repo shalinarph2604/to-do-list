@@ -1,16 +1,8 @@
-import { FindOptions, Op } from 'sequelize'
+import { FindOptions, FindAndCountOptions, Optional } from 'sequelize'
 import UserModel, { User } from '../models/User'
+import { NullishPropertiesOf } from 'sequelize/types/utils'
 
-interface FindAllUserWhere {
-  name?: string
-}
-
-interface FindAllUserOptions {
-  limit?: number
-  page?: number
-}
-
-const createUser = async (user: User): Promise<User> => {
+const createUser = async (user: Optional<User, NullishPropertiesOf<User>> | undefined): Promise<User> => {
   return UserModel.create(user).then(res => res.toJSON())
 }
 
@@ -51,39 +43,11 @@ const deleteUserById = async (id: number) => {
   })
 }
 
-const findAllUser = async (where: FindAllUserWhere = {}, opts: FindAllUserOptions = {}) => {
-  const payload: FindOptions<User> = {}
-  if (where.name) {
-    payload.where = {
-      name: {
-        [Op.iLike]: `%${where.name}%`,
-      },
-    }
-  }
-
-  if (opts.limit && opts.page) {
-    payload.limit = opts.limit
-    payload.offset = (opts.page - 1) * opts.limit + 1
-  }
-
+const findAllUser = async (payload: FindOptions<User> | undefined) => {
   return UserModel.findAll(payload)
 }
 
-const findAndCountAllUser = async (where: FindAllUserWhere = {}, opts: FindAllUserOptions = {}) => {
-  const payload: FindOptions<User> = {}
-  if (where.name) {
-    payload.where = {
-      name: {
-        [Op.iLike]: `%${where.name}%`,
-      },
-    }
-  }
-
-  if (opts.limit && opts.page) {
-    payload.limit = opts.limit
-    payload.offset = (opts.page - 1) * opts.limit + 1
-  }
-
+const findAndCountAllUser = async (payload: Omit<FindAndCountOptions<User>, 'group'> | undefined) => {
   return UserModel.findAndCountAll(payload)
 }
 
