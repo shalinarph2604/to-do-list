@@ -72,7 +72,7 @@ const findAndCountAllUser = async (query: QueryUserSchema) => {
 
   payload.limit = query.limit
 
-  payload.offset = (query.page - 1) * query.limit + 1
+  payload.offset = (query.page - 1) * query.limit
 
   return userRepository.findAndCountAllUser(payload)
 }
