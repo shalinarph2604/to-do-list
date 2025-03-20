@@ -1,11 +1,23 @@
 import sequelize from '../configs/sequelize'
-import User from './User'
+import UserModel from './User'
+import UserPrivilegeModel from './UserPrivilege'
 
 async function syncDatabase() {
-  await sequelize.sync({ alter: true })
+  UserPrivilegeModel.hasMany(UserModel, {
+    foreignKey: 'privilegeId',
+    as: 'users',
+  })
+
+  UserModel.belongsTo(UserPrivilegeModel, {
+    foreignKey: 'privilegeId',
+    as: 'privilege',
+  })
+
+  await sequelize.sync()
 }
 
 export {
   syncDatabase,
-  User,
+  UserModel,
+  UserPrivilegeModel,
 }

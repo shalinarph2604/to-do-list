@@ -8,6 +8,8 @@ export interface User {
   email: string
   name: string
   password: string
+
+  privilegeId?: number
   createdAt?: Date
   updatedAt?: Date
 }
@@ -27,6 +29,15 @@ const UserModel = sequelize.define<Model<User>>('User', {
   name: {
     type: DataTypes.TEXT('tiny'), // TINYTEXT maksimal 255 karakter
     allowNull: false,
+  },
+  privilegeId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'user_privileges', // Reference the table name
+      key: 'id',
+    },
+    defaultValue: 1, // Default privilege ID (e.g., regular user)
   },
   password: {
     type: DataTypes.STRING, // VARCHAR(255)

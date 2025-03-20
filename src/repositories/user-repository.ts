@@ -1,13 +1,19 @@
 import { FindOptions, FindAndCountOptions, Optional } from 'sequelize'
 import UserModel, { User } from '../models/User'
 import { NullishPropertiesOf } from 'sequelize/types/utils'
+import { UserPrivilegeModel } from '../models'
 
 const createUser = async (user: Optional<User, NullishPropertiesOf<User>> | undefined): Promise<User> => {
   return UserModel.create(user).then(res => res.toJSON())
 }
 
 const findUserById = async (id: number): Promise<Omit<User, 'password'> | undefined> => {
-  return UserModel.findByPk(id).then(res => res?.toJSON())
+  return UserModel.findByPk(id, {
+    include: {
+      model: UserPrivilegeModel,
+      as: 'privilege',
+    },
+  }).then(res => res?.toJSON())
 }
 
 const findUserByEmail = async (email: string): Promise<Omit<User, 'password'> | undefined> => {
@@ -47,7 +53,11 @@ const findAllUser = async (payload: FindOptions<User> | undefined) => {
   return UserModel.findAll(payload)
 }
 
-const findAndCountAllUser = async (payload: Omit<FindAndCountOptions<User>, 'group'> | undefined) => {
+const findAndCountAllUser = async (payload: Omit<FindAndCountOptions<User>, 'group'>) => {
+  payload.include = {
+    model: UserPrivilegeModel,
+    as: 'privilege',
+  }
   return UserModel.findAndCountAll(payload)
 }
 
