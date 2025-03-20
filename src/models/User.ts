@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../configs/sequelize'
+import { UserPrivilege } from './UserPrivilege'
 
 // definisikan interface User,
 // interface ini yang akan digunakan oleh Service
@@ -12,6 +13,8 @@ export interface User {
   privilegeId?: number
   createdAt?: Date
   updatedAt?: Date
+
+  privilege?: UserPrivilege
 }
 
 // Definisikan Model, model ini akan digunakan hanya pada repository saja

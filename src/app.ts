@@ -4,9 +4,11 @@ import morgan from 'morgan'
 import CustomError from './helpers/custom-errors/custom-error'
 import uploadRoutes from './routes/upload-files'
 import userRoutes from './routes/user-route'
+import authRoutes from './routes/auth-route'
 
 // init database
 import { syncDatabase } from './models'
+import { adminMiddleware, authMiddleware } from './middlewares/auth-middleware'
 
 const app = express()
 const port = 3000
@@ -24,7 +26,13 @@ app.get('/', homePageHandler)
 
 app.use('/public', express.static('public'))
 app.use('/upload', uploadRoutes)
-app.use('/', userRoutes)
+app.use('/', authRoutes, userRoutes)
+app.get('/testing-auth', authMiddleware, (req, res) => {
+  res.send('Authenticated!')
+})
+app.get('/testing-admin', authMiddleware, adminMiddleware, (req, res) => {
+  res.send('Authorization!')
+})
 
 // middleware error
 const errorLogger = (err, _req, res, next) => {

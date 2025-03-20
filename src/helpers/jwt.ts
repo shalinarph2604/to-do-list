@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const generateToken = async (payload, expiresIn) => {
+const generateToken = async (payload, expiresIn): Promise<string> => {
   return new Promise((resolve, reject) => {
     jwt.sign(payload, 'secret_key', {
       expiresIn,
@@ -8,18 +8,22 @@ const generateToken = async (payload, expiresIn) => {
       if (err) {
         reject(err)
       }
-      resolve(token)
+      if (token) {
+        resolve(token)
+      }
     })
   })
 }
 
-const verifyToken = (token: string) => {
+const verifyToken = async (token: string): Promise<string | jwt.JwtPayload> => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, 'secret_key', function (error, decoded) {
       if (error) {
         reject(error)
       }
-      resolve(decoded)
+      if (decoded) {
+        resolve(decoded)
+      }
     })
   })
 }

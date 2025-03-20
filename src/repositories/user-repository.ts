@@ -24,12 +24,12 @@ const findUserByEmail = async (email: string): Promise<Omit<User, 'password'> | 
   }).then(res => res?.toJSON())
 }
 
-const findUserPasswordByEmail = async (email: string): Promise<Pick<User, 'password'> | undefined> => {
+const findUserPasswordByEmail = async (email: string): Promise<Pick<User, 'password' | 'id'> | undefined> => {
   return UserModel.scope('allAttributes').findOne({
     where: {
       email,
     },
-    attributes: ['password'], // hanya dapatkan kolom password
+    attributes: ['id', 'password'], // hanya dapatkan kolom password
   }).then(res => res?.toJSON())
 }
 
