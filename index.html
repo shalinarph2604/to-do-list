@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #FF9AA2;
+      --secondary: #B5EAD7;
+      --accent: #FFDAC1;
+      --dark: #6B6054;
+      --light: #F8F8F8;
+      --border: 4px solid var(--dark);
+      --shadow: 6px 6px 0px rgba(107, 96, 84, 0.3);
+      --radius: 12px;
+      --font-base: 16px;
+      --font-sm: 0.875rem;
+      --font-xs: 0.75rem;
+    }
+
+    .dark-mode {
+      --primary: #FF7B8A;
+      --secondary: #333333;
+      --accent: #FFC8A2;
+      --dark: #D0D0D0;
+      --light: #1E1E1E;
+      --border: 4px solid var(--dark);
+      --shadow: 6px 6px 0px rgba(208, 208, 208, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      padding: 1.5rem;
+      min-height: 100vh;
+      line-height: 1.5;
+      font-size: var(--font-base);
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .landing-container {
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .app-logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .landing-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .landing-subtitle {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      color: var(--dark);
+      opacity: 0.8;
+    }
+
+    .landing-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .landing-btn {
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      border: var(--border);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+      width: 100%;
+    }
+
+    .landing-btn-primary {
+      background-color: var(--primary);
+      color: var(--dark);
+    }
+
+    .landing-btn-secondary {
+      background-color: var(--secondary);
+      color: var(--dark);
+    }
+
+    .dark-mode .landing-btn-secondary {
+      background-color: #333333;
+    }
+
+    .landing-btn:hover {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0px rgba(107, 96, 84, 0.4);
+    }
+
+    .username-form {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border: var(--border);
+      box-shadow: var(--shadow);
+      display: none;
+      animation: fadeIn 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .dark-mode .username-form {
+      background-color: #2A2A2A;
+    }
+
+    .username-form.visible {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-align: left;
+      font-size: var(--font-sm);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      box-shadow: var(--shadow);
+      background-color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .dark-mode .form-input {
+      background-color: #333333;
+      color: var(--dark);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .form-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      border: var(--border);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all 0.2s ease;
+      min-width: 120px;
+    }
+
+    .form-btn-primary {
+      background-color: var(--primary);
+      color: var(--dark);
+    }
+
+    .form-btn-secondary {
+      background-color: white;
+      color: var(--dark);
+    }
+
+    .dark-mode .form-btn-secondary {
+      background-color: #333333;
+    }
+
+    .form-btn:hover {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0px rgba(107, 96, 84, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .landing-container {
+        max-width: 100%;
+      }
+
+      .landing-btn {
+        padding: 0.5rem;
+      }
+
+      .form-btn {
+        min-width: 100px;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="landing-container">
+    <div class="app-logo">✓</div>
+    <h1 class="landing-title">To-Do List</h1>
+    <p class="landing-subtitle">Get things done with style</p>
+
+    <div class="landing-buttons" id="landing-buttons">
+      <button class="landing-btn landing-btn-primary" id="create-list-btn">Create New List</button>
+      <button class="landing-btn landing-btn-secondary" id="view-list-btn">View My List</button>
+    </div>
+
+    <!-- Create Username Form -->
+    <div class="username-form" id="create-username-form">
+      <div class="form-group">
+        <label for="new-username" class="form-label">Create a User</label>
+        <input type="text" id="new-name" class="form-input" placeholder="Enter Name">
+        <input type="text" id="new-email" class="form-input" placeholder="Enter email">
+        <input type="password" id="new-password" class="form-input" placeholder="Enter password">
+      </div>
+      <div class="form-actions">
+        <button class="form-btn form-btn-secondary" id="cancel-username-btn">Cancel</button>
+        <button class="form-btn form-btn-primary" id="save-username-btn">Continue</button>
+      </div>
+    </div>
+
+    <!-- View Username Form -->
+    <div class="username-form" id="view-username-form">
+      <div class="form-group">
+        <label for="existing-email" class="form-label">Enter your email</label>
+        <input type="text" id="existing-email" class="form-input" placeholder="Your email">
+        <label for="existing-password" class="form-label">Enter your password</label>
+        <input type="password" id="existing-password" class="form-input" placeholder="Your password">
+      </div>
+      <div class="form-actions">
+        <button class="form-btn form-btn-secondary" id="cancel-view-btn">Cancel</button>
+        <button class="form-btn form-btn-primary" id="load-tasks-btn">View Tasks</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const server = 'http://localhost:3000';
+
+    async function fetchData(path, method, payload) {
+      const url = `${server}${path}`;
+      const options = {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        return null;
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // DOM Elements
+      const landingButtons = document.getElementById('landing-buttons');
+      const createUsernameForm = document.getElementById('create-username-form');
+      const viewUsernameForm = document.getElementById('view-username-form');
+
+      const createListBtn = document.getElementById('create-list-btn');
+      const viewListBtn = document.getElementById('view-list-btn');
+      const saveUsernameBtn = document.getElementById('save-username-btn');
+      const cancelUsernameBtn = document.getElementById('cancel-username-btn');
+      const loadTasksBtn = document.getElementById('load-tasks-btn');
+      const cancelViewBtn = document.getElementById('cancel-view-btn');
+
+      const newName = document.getElementById('new-name');
+      const newEmail = document.getElementById('new-email');
+      const newPassword = document.getElementById('new-password');
+      const existingEmailInput = document.getElementById('existing-email');
+      const existingPasswordInput = document.getElementById('existing-password');
+
+      const allFormInput = [newName, newEmail, newPassword, existingEmailInput, existingPasswordInput]
+
+      // Apply saved theme
+      function applySavedTheme() {
+        const savedTheme = localStorage.getItem('todo_theme');
+        if (savedTheme) {
+          console.log("Applying saved theme:", savedTheme);
+          document.body.className = savedTheme === 'light' ? '' : `${savedTheme}-mode`;
+        }
+      }
+
+      // Initialize theme
+      applySavedTheme();
+
+      // Show create username form
+      createListBtn.addEventListener('click', function () {
+        landingButtons.style.display = 'none';
+        createUsernameForm.classList.add('visible');
+        newName.focus();
+      });
+
+      // Show view username form
+      viewListBtn.addEventListener('click', function () {
+        landingButtons.style.display = 'none';
+        viewUsernameForm.classList.add('visible');
+        existingEmailInput.focus();
+      });
+
+      // Cancel forms and show buttons again
+      function resetForms() {
+        landingButtons.style.display = 'flex';
+        createUsernameForm.classList.remove('visible');
+        viewUsernameForm.classList.remove('visible');
+        allFormInput.forEach(el => {
+          el.value = '';
+        })
+      }
+
+      cancelUsernameBtn.addEventListener('click', resetForms);
+      cancelViewBtn.addEventListener('click', resetForms);
+
+      // Save new username
+      saveUsernameBtn.addEventListener('click', async function () {
+        const email = newEmail.value.trim();
+        const password = newPassword.value.trim();
+        const name = newName.value.trim();
+        if (!email || !password || !name) {
+          alert('Please complete the form');
+          return;
+        }
+
+        try {
+          const registerUser = await fetchData('/auth/register', 'POST', {
+            email,
+            password,
+            name,
+          })
+
+          if (!registerUser || !registerUser.data?.token) {
+            if (registerUser.message) {
+              if (registerUser.errors && registerUser.errors.length) {
+                const errorMessages = registerUser.errors.reduce((acc, error) => {
+                  return acc + (acc ? ", " : "") + error.message;
+                }, "");
+                return alert(errorMessages);
+              }
+              return alert(registerUser.message);
+            };
+            return;
+          }
+
+          // Store token in sessionStorage and localStorage for PWA
+          sessionStorage.setItem('token', registerUser.data.token);
+          localStorage.setItem('token_fallback', registerUser.data.token);
+          alert('success')
+
+          window.location.href = '/app.html';
+        } catch (error) {
+          console.error("Error creating user: ", error);
+          alert('An error occurred. Please try again.');
+        }
+      });
+
+      // Load tasks for existing username
+      loadTasksBtn.addEventListener('click', async function () {
+        const email = existingEmailInput.value.trim();
+        const password = existingPasswordInput.value.trim();
+        if (!email || !password) {
+          alert('Please complete the form!');
+          return;
+        }
+
+
+        try {
+          const loginUser = await fetchData('/auth/login', 'POST', {
+            email,
+            password,
+          })
+
+          if (!loginUser || !loginUser.data?.token) {
+            if (loginUser.message) {
+              if (loginUser.errors && loginUser.errors.length) {
+                const errorMessages = loginUser.errors.reduce((acc, error) => {
+                  return acc + (acc ? ", " : "") + error.message;
+                }, "");
+                return alert(errorMessages);
+              }
+              return alert(loginUser.message);
+            };
+            return;
+          }
+
+          // Store token in sessionStorage and localStorage for PWA
+          sessionStorage.setItem('token', loginUser.data.token);
+          localStorage.setItem('token_fallback', loginUser.data.token);
+          alert('success')
+
+          window.location.href = '/app.html';
+        } catch (error) {
+          console.error("Error creating user: ", error);
+          alert('An error occurred. Please try again.');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
