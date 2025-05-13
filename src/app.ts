@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
@@ -5,6 +8,8 @@ import CustomError from './helpers/custom-errors/custom-error'
 import uploadRoutes from './routes/upload-files'
 import userRoutes from './routes/user-route'
 import authRoutes from './routes/auth-route'
+import taskRoutes from './routes/task-route'
+import path from 'path'
 
 // init database
 import { syncDatabase } from './models'
@@ -16,17 +21,29 @@ const port = 3000
 app.use(cors())
 app.use(morgan('dev'))
 
-const homePageHandler = (_req, res) => {
-  res.json({
-    message: 'hello from Express',
-  })
-}
+// const homePageHandler = (_req, res) => {
+//   res.json({
+//     message: 'hello from Express',
+//   })
+// }
 
-app.get('/', homePageHandler)
+// app.get('/', homePageHandler)
+
+// Static file serving untuk file HTML
+app.use(express.static(path.join(__dirname, '..')))
+
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'index.html'))
+})
+
+app.get('/app.html', (_req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'app.html'))
+})
 
 app.use('/public', express.static('public'))
 app.use('/upload', uploadRoutes)
-app.use('/', authRoutes, userRoutes)
+app.use('/', authRoutes, userRoutes, taskRoutes)
+
 app.get('/testing-auth', authMiddleware, (req, res) => {
   res.send('Authenticated!')
 })

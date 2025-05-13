@@ -11,7 +11,7 @@ export interface UserPrivilege {
 }
 
 // Define UserPrivilege Model
-const UserPrivilegeModel = sequelize.define<Model<UserPrivilege>>('UserPrivilege', {
+export const UserPrivilegeModel = sequelize.define<Model<UserPrivilege>>('UserPrivilege', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

@@ -10,7 +10,7 @@ export interface User {
   name: string
   password: string
 
-  privilegeId?: number
+  privilegeId?: number // 1 privilege menampung banyak user, sementara 1 user hanya memiliki 1 privilege
   createdAt?: Date
   updatedAt?: Date
 

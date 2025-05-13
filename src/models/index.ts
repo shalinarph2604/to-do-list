@@ -1,6 +1,7 @@
 import sequelize from '../configs/sequelize'
 import UserModel from './User'
 import UserPrivilegeModel from './UserPrivilege'
+import TaskModel from './Task'
 
 async function syncDatabase() {
   UserPrivilegeModel.hasMany(UserModel, {
@@ -20,4 +21,5 @@ export {
   syncDatabase,
   UserModel,
   UserPrivilegeModel,
+  TaskModel,
 }
