@@ -17,7 +17,7 @@ REST API for to-do list website with JWT authentication, task CRUD, and input va
 - Database: PostgreSQL via NeonDB
 - Tools: Postman, Beekeeper Studio, Docker
 
-## How to run the project locally
+## ⚙️ How to run the project locally
 1. Clone this repository, then open the folder in VSCode
 2. Install dependencies with `npm install` on the Terminal/CLI
 3. Create a .env file in the root directory, use .env.example file as a reference
